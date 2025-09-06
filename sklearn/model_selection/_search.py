@@ -769,12 +769,15 @@ class BaseSearchCV(six.with_metaclass(ABCMeta, BaseEstimator,
                 self.best_index_]
 
         if self.refit:
+            # Measure time for refitting the best estimator
+            refit_start_time = time.time()
             self.best_estimator_ = clone(base_estimator).set_params(
                 **self.best_params_)
             if y is not None:
                 self.best_estimator_.fit(X, y, **fit_params)
             else:
                 self.best_estimator_.fit(X, **fit_params)
+            self.refit_time_ = time.time() - refit_start_time
 
         # Store the only scorer not as a dict for single metric evaluation
         self.scorer_ = scorers if self.multimetric_ else scorers['score']
@@ -1080,6 +1083,11 @@ class GridSearchCV(BaseSearchCV):
 
     n_splits_ : int
         The number of cross-validation splits (folds/iterations).
+
+    refit_time_ : float
+        Seconds used for refitting the best model on the whole dataset.
+
+        This is present only if ``refit`` is not False.
 
     Notes
     ------
@@ -1391,6 +1399,11 @@ class RandomizedSearchCV(BaseSearchCV):
 
     n_splits_ : int
         The number of cross-validation splits (folds/iterations).
+
+    refit_time_ : float
+        Seconds used for refitting the best model on the whole dataset.
+
+        This is present only if ``refit`` is not False.
 
     Notes
     -----
