@@ -13,11 +13,16 @@ from __future__ import division
 # License: BSD 3 clause
 
 from abc import ABCMeta, abstractmethod
-from collections import Mapping, namedtuple, defaultdict, Sequence, Iterable
+try:
+    from collections.abc import Mapping, Sequence, Iterable
+except ImportError:
+    from collections import Mapping, Sequence, Iterable
+from collections import namedtuple, defaultdict
 from functools import partial, reduce
 from itertools import product
 import operator
 import warnings
+import time
 
 import numpy as np
 from scipy.stats import rankdata

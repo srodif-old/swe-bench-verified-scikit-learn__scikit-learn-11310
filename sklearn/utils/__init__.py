@@ -1,7 +1,10 @@
 """
 The :mod:`sklearn.utils` module includes various utilities.
 """
-from collections import Sequence
+try:
+    from collections.abc import Sequence
+except ImportError:
+    from collections import Sequence
 
 import numpy as np
 from scipy.sparse import issparse
